@@ -16,7 +16,7 @@ export async function POST(req) {
 
     // Signature check
     if (generated_signature === razorpay_signature) {
-      console.log("✅ Signature verified. Payment successful!");
+
 
       // TODO: Update user's subscription info in database here
 

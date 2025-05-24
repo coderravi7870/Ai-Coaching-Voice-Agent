@@ -26,8 +26,7 @@ export const AIModel = async (topic, coachingOption, msg) => {
       { role: "user", content: msg },
     ],
   });
-  console.log("completion",completion)
-  console.log(completion.choices[0].message);
+
 
   return completion.choices[0].message;
 };
@@ -45,7 +44,7 @@ export const AIModelToGenerateFeedBackAndNotes = async (coachingOption, conversa
       { role: "assistant", content: PROMPT },
     ],
   });
-  console.log(completion.choices[0].message);
+
 
   return completion.choices[0].message;
 };

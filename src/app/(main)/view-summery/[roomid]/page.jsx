@@ -15,7 +15,6 @@ const ViewSummery = () => {
     id: roomid,
   });
 
-  console.log(DiscussionRoomData);
 
   const GetAbstractImages = (option) => {
     const coachingOption = ExpertList.find((item) => item.name == option);
@@ -53,7 +52,7 @@ const ViewSummery = () => {
         <div className="col-span-2">
             <h2 className="text-lg font-bold mb-6">your conversation</h2>
           {DiscussionRoomData?.conversation && (
-            <ChatBox conversation={DiscussionRoomData?.conversation} />
+            <ChatBox conversation={DiscussionRoomData?.conversation} soundShow={false} />
           )}
         </div>
       </div>

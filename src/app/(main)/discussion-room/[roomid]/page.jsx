@@ -8,37 +8,27 @@ import Image from "next/image";
 import { UserButton } from "@stackframe/stack";
 import { Button } from "@/components/ui/button";
 
-// import RecordRTC from "recordrtc";
-// import { RealtimeTranscriber } from "assemblyai";
+
 import {
   AIModel,
-  AIModelToGenerateFeedBackAndNotes,
-  ConvertTextToSpeech,
-  getToken,
+
 } from "@/services/GlobalServices";
 import { Input } from "@/components/ui/input";
 import { Loader2Icon } from "lucide-react";
 import ChatBox from "./_components/ChatBox";
-import { toast } from "sonner";
 import FeedBack from "./_components/FeedBack";
 import { UserContext } from "@/app/_context/UserContext";
-import Webcam from "react-webcam";
+
 
 const DiscussionRoom = () => {
   const { roomid } = useParams();
   const { userData, setUserData } = useContext(UserContext);
   const [expert, setExpert] = useState();
-  // const [transcribe,setTranscribe] = useState();
-  // const [enableMic, setEnableMic] = useState(false);
-  // const [auddioUrl, setAudioUrl] = useState();
+
   const [conversation, setConversation] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [enableFeedbackNotes, setEnableFeedbackNotes] = useState(false);
 
-  // let texts = {};
-  // let silenceTimeout;
-  // const recorder = useRef(null);
-  // const realtimeTranscriber = useRef(null);
+
 
   const inputRef = useRef();
 
@@ -66,9 +56,7 @@ const DiscussionRoom = () => {
     }
     setLoading(true);
 
-    // await updateUserTokenMathod(transcribe); // update users generated token
 
-    // calling AI text Model to Get Response
     const aiResp = await AIModel(
       DiscussionRoomData.topic,
       DiscussionRoomData.coachingOption,
@@ -81,13 +69,6 @@ const DiscussionRoom = () => {
       aiResp,
     ]);
 
-    // const url = await ConvertTextToSpeech(
-    //   aiResp.content,
-    //   DiscussionRoomData.expertName
-    // );
-
-    // console.log(url);
-    // setAudioUrl(url);
 
     setLoading(false);
     inputRef.current.value = "";
@@ -111,129 +92,7 @@ const DiscussionRoom = () => {
     updateConversation();
   }, [conversation]);
 
-  // const connectToServer = async () => {
-  //   setEnableMic(true);
-  //   setLoading(true);
-
-  //   // Init Assembly AI
-
-  //   realtimeTranscriber.current = new RealtimeTranscriber({
-  //     token: await getToken(),
-  //     sample_rate: 16_000,
-  //   });
-
-  //   realtimeTranscriber.current.on("transcript", async (transcript) => {
-  //     console.log(transcript);
-  //     let msg = "";
-
-  //     if (transcript.message_type == "FinalTranscript") {
-  //       setConversation((prev) => [
-  //         ...prev,
-  //         {
-  //           role: "user",
-  //           content: transcript.text,
-  //         },
-  //       ]);
-
-  //       // calling AI text Model to Get Response
-  //       const aiResp = await AIModel(
-  //         DiscussionRoomData.topic,
-  //         DiscussionRoomData.coachingOption,
-  //         transcript.text
-  //       );
-  //       setConversation(prev=>[...prev,aiResp]);
-  //       console.log(aiResp);
-  //     }
-  //     texts[transcript.audio_start] = transcript?.text;
-  //     const keys = Object.keys(texts);
-  //     keys.sort((a, b) => a - b);
-
-  //     for (const key of keys) {
-  //       if (texts[key]) {
-  //         msg += `${texts[key]}`;
-  //       }
-  //     }
-  //     setTranscribe(msg);
-  //   });
-
-  //   await realtimeTranscriber.current.connect();
-  //   setLoading(false);
-
-  //   if (typeof window !== "undefined" && typeof navigator !== "undefined") {
-  //     navigator.mediaDevices
-  //       .getUserMedia({ audio: true })
-  //       .then((stream) => {
-  //         recorder.current = new RecordRTC(stream, {
-  //           type: "audio",
-  //           mimeType: "audio/webm;codecs=pcm",
-  //           recorderType: RecordRTC.StereoAudioRecorder,
-  //           timeSlice: 250,
-  //           desiredSampRate: 16000,
-  //           numberOfAudioChannels: 1,
-  //           bufferSize: 4096,
-  //           audioBitsPerSecond: 128000,
-  //           ondataavailable: async (blob) => {
-  //             // if (!realtimeTranscriber.current) return;
-  //             // Reset the silence detection timer on audio input
-  //             clearTimeout(silenceTimeout);
-
-  //             const buffer = await blob.arrayBuffer();
-
-  //             console.log(buffer);
-  //             // realtimeTranscriber.current.sendAudio(buffer);
-
-  //             // Restart the silence detection timer
-  //             silenceTimeout = setTimeout(() => {
-  //               console.log("User stopped talking");
-  //               // Handle user stopped talking (e.g., send final transcript, stop recording, etc.)
-  //             }, 2000);
-  //           },
-  //         });
-  //         recorder.current.startRecording();
-  //       })
-  //       .catch((err) => console.error(err));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     if (conversation[conversation.length - 1].role == "user") {
-  //       // calling AI text Model to Get Response
-
-  //       const lastTwoMsg = conversation.slice(-2);
-  //       const aiResp = await AIModel(
-  //         DiscussionRoomData.topic,
-  //         DiscussionRoomData.coachingOption,
-  //         lastTwoMsg
-  //       );
-
-  //       const url = await ConvertTextToSpeech(aiResp.content,DiscussionRoomData.expertName);
-
-  //       console.log(url);
-  // setAudioUrl(url);
-
-  //       setConversation((prev) => [...prev, aiResp]);
-  //     }
-  //   }
-  //   fetchData();
-  // },[conversation]);
-
-  // const disconnect = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   await realtimeTranscriber.current.disconnect();
-  //   recorder.current.pauseRecording();
-  //   recorder.current = null;
-  //   setEnableMic(false);
-  // await UpdateConversation({
-  //   id: DiscussionRoomData._id,
-  //   conversation: conversation
-  // })
-  //   setLoading(false);
-  // setEnableFeedbackNotes(true);
-  // };
-
+ 
   const updateUserTokenMathod = async (text) => {
     // console.log("text",text);
     
@@ -269,14 +128,11 @@ const DiscussionRoom = () => {
               />
             )}
             <h2 className="text-gray-500">{expert?.name}</h2>
-            {/* <audio src={auddioUrl} type="audio/mp3" autoPlay/> */}
             <div className="sm:p-5 bg-gray-200 sm:px-10 rounded-lg absolute bottom-10 right-10 ">
               <UserButton />
             </div>
 
-            {/* <div>
-              <Webcam height={170} width={250} className="rounded-2xl"/>
-            </div> */}
+ 
           </div>
 
           <FeedBack
@@ -284,30 +140,12 @@ const DiscussionRoom = () => {
             DiscussionRoomData={DiscussionRoomData}
           />
 
-          {/* <div className="mt-5">
-            {!enableMic ? (
-              <Button className="cursor-pointer" onClick={connectToServer} disabled={loading}>
-                {loading && <Loader2Icon className="animate-spin"/>}Connect
-              </Button>
-            ) : (
-              <Button
-                className="cursor-pointer"
-                onClick={disconnect}
-                variant="destructive"
-                disabled={loading}
-              >
-                {loading && <Loader2Icon className="animate-spin"/>}Disconnect
-              </Button>
-            )}
-          </div> */}
+         
         </div>
 
         <div className="col-span-2 mb-3 sm:mb-0">
           <ChatBox conversation={conversation} />
-          {/* <h2 className="mt-4 text-gray-400 text-sm text-center">
-            At the end of your conversation we will automatically generate
-            feedback/notes from your conversation
-          </h2> */}
+         
 
           <div className="mt-5 flex items-center">
             <Input type="text" placeholder="Enter your doubt" ref={inputRef} />

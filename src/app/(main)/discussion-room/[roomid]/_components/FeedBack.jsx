@@ -21,7 +21,7 @@ const FeedBack = ({ conversation, DiscussionRoomData }) => {
         conversation
       );
 
-      console.log(result.content);
+
       await UpdateSummery({
         id: roomid,
         summery: result.content,
@@ -36,7 +36,7 @@ const FeedBack = ({ conversation, DiscussionRoomData }) => {
   };
 
   return (
-    <div>
+    <div className="text-center">
       <Button
         className="cursor-pointer"
         disabled={conversation.length == 0 || feedbackLoading}

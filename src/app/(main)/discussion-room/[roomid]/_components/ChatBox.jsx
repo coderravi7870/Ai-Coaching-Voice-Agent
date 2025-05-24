@@ -1,19 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { speakText } from "@/services/GlobalServices";
 
-const ChatBox = ({ conversation }) => {
+const ChatBox = ({ conversation,soundShow=true }) => {
+  
   const [isSpeacking, setIsSpeacking] = useState(false);
   const [speaking,setSpeaking] = useState(false);
 
@@ -34,7 +25,7 @@ const ChatBox = ({ conversation }) => {
   return (
     <div className="h-[90vh] sm:h-[60vh] bg-red-300 border rounded-xl p-4 flex flex-col overflow-auto scrollbar-hide relative">
       <div className="sticky -top-2 z-20 flex items-center">
-        <div className="p-2 ml-1 bg-transparent rounded-full cursor-pointer">
+        <div className={`p-2 ml-1 bg-transparent rounded-full cursor-pointer ${soundShow==false && 'hidden'}`}>
           {speaking ? (
             <FaVolumeUp
               size={22}
@@ -49,29 +40,11 @@ const ChatBox = ({ conversation }) => {
             />
           )}
         </div>
-        {/* <div>
-          {" "}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">x1</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuRadioGroup
-                value={position}
-                onValueChange={setPosition}
-              >
-                <DropdownMenuRadioItem value="top">x2</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="bottom">
-                  x3
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> */}
+        
       </div>
-      {/* <div> */}
+
       {conversation.map((item, index) => (
-        <div className={`flex ${item.role == "user" && "justify-end"}`}>
+        <div className={`flex ${item.role == "user" && "justify-end"}`} key={index}>
           {item.role == "assistant" ? (
             <h2 className="p-1 mt-2 px-2 bg-primary text-white inline-block rounded-md">
               {item?.content}
@@ -83,7 +56,7 @@ const ChatBox = ({ conversation }) => {
           )}
         </div>
       ))}
-      {/* </div> */}
+
     </div>
   );
 };

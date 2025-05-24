@@ -41,7 +41,7 @@ const Credits = () => {
     });
 
     const { order } = data;
-    console.log("orderData", order);
+
     setLoading(false);
 
     const options = {
@@ -52,10 +52,10 @@ const Credits = () => {
       description: "Upgrade to Pro Plan of ai-coaching-voice-agent",
       order_id: order.id,
       handler: async (response) => {
-        console.log(response);
+ 
         try {
           const { data } = await axios.post("api/verifyPayment", { response });
-          console.log("data", data);
+
           if(data?.success){
             await update_Credits_Subscription({
               id: userData._id,
@@ -67,7 +67,7 @@ const Credits = () => {
             toast("Payment Failed");
           }
         } catch (error) {
-          console.log(error);
+
           toast.error("Failed to process payment!");
         }
       },
