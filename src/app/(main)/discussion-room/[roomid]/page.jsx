@@ -80,7 +80,7 @@ const DiscussionRoom = () => {
 
   useEffect(() => {
     const updateConversation = async () => {
-      console.log("Conversation", conversation);
+
       if (conversation.length > 0) {
         await UpdateConversation({
           id: DiscussionRoomData?._id,
